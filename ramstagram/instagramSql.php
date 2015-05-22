@@ -1,9 +1,9 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
 
-	$dsn = 'mysql:host=localhost;dbname=';
-	$user = '';
-	$password = '';
+	$dsn = 'mysql:host=localhost;dbname=instapi';
+	$user = 'root';
+	$password = 'root';
 
 try {
     $db = new PDO($dsn, $user, $password);
