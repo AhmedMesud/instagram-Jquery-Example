@@ -16,9 +16,8 @@
 
 	}
   
-  //////////////İD SI VERILEN KULLANICININ TAKIPCI SAYISINI BULAN VE RESIMLERI TAKIPCI SAYISINA GöRE FILTRELEYEN FONKSIYON./////////////////////////////////////////////////////////////
 
-	function takipcisayisi(kullanici_id,n,div) { 
+	function takipcisayisi(kullanici_id,n,div) {
 
 		$.ajax({
 			type: "GET",
@@ -30,9 +29,9 @@
 				ig_count = add_commas(ig_count);
 				$('#instagram_count'+n).html(ig_count);
 
-				if(ig_count<200){ //200 den az takipçisi olan kullanicilarin paylaştığı resimleri göstermiyor.
+				if(ig_count<200){
 
-					$('#pic-'+ div +'').remove(); 
+					$('#pic-'+ div +'').remove();
 				}
 			}
 		});
@@ -53,7 +52,7 @@
 			}
 		}
 	}
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
  var n = 0;
 
 var access_token = "18360510.5b9e1e6.de870cc4d5344ffeaae178542029e98b"; //*** YOU NEED TO GET YOUR OWN ACCESS TOKEN FROM INSTAGRAM
@@ -62,24 +61,7 @@ var access_token = "18360510.5b9e1e6.de870cc4d5344ffeaae178542029e98b"; //*** YO
 
 var resolution = "thumbnail"; // resolution: low_resolution, thumbnail, standard_resolution
 var user_id = "18360510"; //userid
-var hashtag = '';
-var h2 = '';
-var hashtagBaslangic = getParameterByName('tag') ; // #hashtag
-
-
-if(hashtagBaslangic.split(' ').length>1){
-
-	hashtag = hashtagBaslangic.split(' ')[0];
-	h2 = hashtagBaslangic.split(' ')[1];
-
-}else{
-
-
-	hashtag = hashtagBaslangic.split(' ')[0];
-
-}
-
-
+var hashtag = getParameterByName('tag') ; // #hashtag
 var last_url = "";
 //https://api.instagram.com/v1/subscriptions?client_secret=CLIENT-SECRET&client_id=CLIENT-ID
 
@@ -92,8 +74,8 @@ var start_url = "https://api.instagram.com/v1/tags/"+hashtag+"/media/recent/?acc
 	
 	var tum_id ;
 	var sadece_kullaniciId;
-						
- ////////////////////////////////////RESIMLERI ARATIP EKRANA YAZDIRAN FONKSIYON/////////////////////////////////////////////////////////////////////////////////
+							
+ 
 function loadEmUp(next_url){
 
 	//console.log("loadEmUp url:" + next_url);
@@ -118,37 +100,10 @@ function loadEmUp(next_url){
 		            for (var i = 0; i < count; i++) {
 						if (typeof data.data[i] !== 'undefined' ) {
 							tum_id = data.data[i].id;
-							sadece_kullaniciId = tum_id.substring(19,29); //Bulunan her resim için paylaşan kullanıcının id sini aldık, bunları aşağıda takipçilerine göre filtreleyeceğiz çünkü
+							sadece_kullaniciId = tum_id.substring(19,29);
 							var div = data.data[i].id;
-
-
-							if(hashtagBaslangic.split(' ').length==2){ // 2 hashtag aratabilmek için
-
-								var tagSayisi = data.data[i].tags.length;
-
-								for(var j=0;j<tagSayisi;j++){
-
-									if(data.data[i].tags[j]==h2){
-									
-										takipcisayisi(sadece_kullaniciId,n,div); //200 den az takipçisi olanları göstermemesini sağlayan fonksiyon
-										$("#instagram").append("<div class='instagram-wrap' id='pic-"+ data.data[i].id +"' ><a target='_blank' href='" + data.data[i].link +"'><span class='likes'>"+data.data[i].likes.count +"</span><img class='counts' src='img/takip.jpeg' style='width:20px;height:20px;margin-left:240px;'/><span class='counts' id='instagram_count"+n+"' ></span></br><img class='instagram-image' id='"+data.data[i].id+"' src='" + data.data[i].images.low_resolution.url +"'  /></a></div>"); 	
-										//Aradıklarını ekrana yazdırıyor
-									}
-
-								}
-
-
-							}else{
-
-								takipcisayisi(sadece_kullaniciId,n,div); //200 den az takipçisi olanları göstermemesini sağlayan fonksiyon
-
+							takipcisayisi(sadece_kullaniciId,n,div);
 								$("#instagram").append("<div class='instagram-wrap' id='pic-"+ data.data[i].id +"' ><a target='_blank' href='" + data.data[i].link +"'><span class='likes'>"+data.data[i].likes.count +"</span><img class='counts' src='img/takip.jpeg' style='width:20px;height:20px;margin-left:240px;'/><span class='counts' id='instagram_count"+n+"' ></span></br><img class='instagram-image' id='"+data.data[i].id+"' src='" + data.data[i].images.low_resolution.url +"'  /></a></div>"); 	
-								//Aradıklarını ekrana yazdırıyor
-							}
-
-							//console.log(data.data[i].tags);
-							
-							
 							n++;
 
 						}  
@@ -157,7 +112,7 @@ function loadEmUp(next_url){
 					
 
 
-					$('a').attr('onclick','yolla(this.href);');	  //Tıklanan fotoğrafın linkini sql e yolluyor.
+					$('a').attr('onclick','yolla(this.href);');	  
 					
 
 			  		console.log("next_url: " + next_url);
@@ -182,19 +137,15 @@ function loadEmUp(next_url){
 		});
 	}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	
 
-///////////////////////////TEKRAR TEKRAR ARAMAYI SAGLAYAN FONKSIYONLAR/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
-var aramaSayisi = 20;
 
 //CALL THE SCRIPT TO START...
 $( document ).ready(function() {
-
+	
 	//APPEND LOAD MORE BUTTON TO THE BODY...
-	$("#more" ).click(function() {  //load more a tıklayınca manuel olarak aramayı tekrar ediyor.
-
-		aramaSayisi = aramaSayisi + 20;  
+	$("#more" ).click(function() {  
 		var next_url = $(this).attr('next_url');
 		loadEmUp(next_url);
 		return false;
@@ -202,19 +153,8 @@ $( document ).ready(function() {
 
 	//start your engines
 	loadEmUp(start_url);
-    
-	setInterval(function(){  //Burada 3 saniyede bir aramayı tekrar etmesini tekrarlardık.
-
-		aramaSayisi = aramaSayisi + 20;
-     	var next_url = $('#more').attr('next_url');
-		loadEmUp(next_url); 
-		console.log(aramaSayisi);
-	}, 3000);
 	
 });
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");

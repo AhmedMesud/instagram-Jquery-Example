@@ -1,8 +1,8 @@
 <?php
- 	$database = "instapi";
+ 	$database = "";
     $host = "localhost";
-    $dbuser = "root";
-    $dbpass = "root";
+    $dbuser = "";
+    $dbpass = "";
     $baglan = @mysql_connect($host,$dbuser,$dbpass);
     if(! $baglan) die ("Mysql Baglantisi Yapilamadi");
     @mysql_select_db($database,$baglan) or die ("Veri Tabanina Baglanti Yapilamadi");
