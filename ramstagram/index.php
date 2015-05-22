@@ -1,5 +1,0 @@
-<?php
-	
-	include("ramstagram.php");
-	
-	?>
